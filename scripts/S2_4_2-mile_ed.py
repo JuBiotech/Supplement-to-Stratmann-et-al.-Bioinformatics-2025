@@ -81,14 +81,18 @@ def plot_ed_benchmark(parallel_times, sequential_times, batch_sizes, postfix):
     plt.xlim((1e1, 2e4))
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"../data/figure_s6.png", dpi=150)
+    plt.savefig(f"../out/figure_s6.png", dpi=150)
+    plt.savefig(f"../out/figure_s6.svg")
 
 
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
 substr_mix_collections = x3cflux.parse_substrate_mixture_collections("../models/mixture.fml")
 batch_sizes_ed = [10, 25, 50, 75, 100] + [200 * i for i in range(1, 6)] + [2000 * i for i in range(1, 6)]
 
-parallel_times, sequential_times = benchmark_ed(data.network_data, data.configurations[0], batch_sizes_ed,
+config_names = [i.name for i in data.configurations]
+config_index = config_names.index("a_STAT")
+
+parallel_times, sequential_times = benchmark_ed(data.network_data, data.configurations[config_index], batch_sizes_ed,
                                                 substr_mix_collections, 75)
 
 plot_ed_benchmark(parallel_times[1:], sequential_times[1:], batch_sizes_ed[1:], "stat")

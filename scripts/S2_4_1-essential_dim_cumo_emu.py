@@ -104,8 +104,8 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     x = np.linspace(ms_times_stat[1][1:, 0].min()-50, ms_times_stat[1][1:, 0].max()+100, 100)
     axs[0, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[0, 0].set_ylabel("$\\leftarrow$ IST runtime [ms]")
-    axs[0, 0].set_xlim((200, 1950))
-    axs[0, 0].set_ylim((0, 3))
+    axs[0, 0].set_xlim((200, 1500))
+    #axs[0, 0].set_ylim((0, 3))
     axs[0, 0].legend()
 
     axs[0, 1].set_title("MS/MS")
@@ -122,7 +122,7 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     x = np.linspace(msms_times_stat[1][1:, 0].min()-100, msms_times_stat[1][1:, 0].max()+100, 100)
     axs[0, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[0, 1].set_xlim((200, 1950))
-    axs[0, 1].set_ylim((0, 3))
+    #axs[0, 1].set_ylim((0, 3))
 
     # INST
     axs[1, 0].errorbar(ms_times_inst[0][1:, 0], ms_times_inst[0][1:, 1], yerr=ms_times_inst[0][1:,2], label="cumomer",
@@ -139,7 +139,7 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     axs[1, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[1, 0].set_xlabel("essential dimension")
     axs[1, 0].set_ylabel("$\\leftarrow$ INST runtime [ms]")
-    axs[1, 0].set_ylim((0, 200))
+    #axs[1, 0].set_ylim((0, 200))
     axs[1, 0].set_xlabel("essential dimension")
 
     axs[1, 1].errorbar(msms_times_inst[0][1:, 0], msms_times_inst[0][1:, 1], yerr=msms_times_inst[0][1:, 2], label="cumomer",
@@ -154,7 +154,7 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     print(f"EMU: r-squared = {result.rvalue}")
     x = np.linspace(msms_times_inst[1][1:, 0].min()-100, msms_times_inst[1][1:,0].max()+100, 100)
     axs[1, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
-    axs[1, 1].set_ylim((0, 200))
+    #axs[1, 1].set_ylim((0, 200))
     axs[1, 1].set_xlabel("essential dimension")
 
     #axs[1].bar([1, 4], [msms_times[0][:, 0].max(), ms_times[0][:, 0].max()], width=1, label="cumomer")
@@ -165,7 +165,8 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     #axs[1].set_ylabel("essential dimension")
 
     plt.tight_layout()
-    plt.savefig(f"../data/figure_s5.png", dpi=150)
+    plt.savefig(f"../out/figure_s5.png", dpi=150)
+    plt.savefig(f"../out/figure_s5.svg")
 
 
 def plot_total_essential_dimension(msms_times_stat, ms_times_stat, msms_times_inst, ms_times_inst):
@@ -208,13 +209,18 @@ def plot_total_essential_dimension(msms_times_stat, ms_times_stat, msms_times_in
 
     fig.supxlabel("measurement configurations", y=0.03)
     plt.tight_layout()
-    plt.savefig(f"../data/figure_s4.png", dpi=150)
+    plt.savefig(f"../out/figure_s4.png", dpi=150)
+    plt.savefig(f"../out/figure_s4.svg")
 
 
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
+config_names = [i.name for i in data.configurations]
+config_index_stat = config_names.index("a_STAT")
+config_index_inst = config_names.index("a_INST")
+
 n_samples = 1000
 
-simulator = x3cflux.create_simulator_from_data(data.network_data, data.configurations[0])
+simulator = x3cflux.create_simulator_from_data(data.network_data, data.configurations[config_index_stat])
 ineq_sys = simulator.parameter_space.inequality_system
 problem = hopsy.Problem(ineq_sys.matrix, ineq_sys.bound)
 problem = hopsy.add_box_constraints(problem, 12 * [-200.] + 23 * [1e-6], 12 * [200.] + 23 * [1000])
@@ -222,9 +228,9 @@ samples = hopsy.sample(hopsy.MarkovChain(problem, hopsy.UniformCoordinateHitAndR
                        hopsy.RandomNumberGenerator(42),
                        n_samples=n_samples, thinning=int(60 ** 2 // 6))[1].reshape((n_samples, -1))
 
-msms_times_stat, ms_times_stat = time_increasing_measurement_simulations(data.network_data, data.configurations[1], samples)
+msms_times_stat, ms_times_stat = time_increasing_measurement_simulations(data.network_data, data.configurations[config_index_stat], samples)
 
-simulator = x3cflux.create_simulator_from_data(data.network_data, data.configurations[0])
+simulator = x3cflux.create_simulator_from_data(data.network_data, data.configurations[config_index_inst])
 ineq_sys = simulator.parameter_space.inequality_system
 problem = hopsy.Problem(ineq_sys.matrix, ineq_sys.bound)
 problem = hopsy.add_box_constraints(problem,
@@ -234,7 +240,7 @@ samples = hopsy.sample(hopsy.MarkovChain(problem, hopsy.UniformCoordinateHitAndR
                        hopsy.RandomNumberGenerator(42),
                        n_samples=n_samples, thinning=int(60 ** 2 // 6))[1].reshape((n_samples, -1))
 
-msms_times_inst, ms_times_inst = time_increasing_measurement_simulations(data.network_data, data.configurations[0], samples)
+msms_times_inst, ms_times_inst = time_increasing_measurement_simulations(data.network_data, data.configurations[config_index_inst], samples)
 
 plot_total_essential_dimension(msms_times_stat, ms_times_stat, msms_times_inst, ms_times_inst)
 

@@ -27,7 +27,8 @@ arviz.plot_pair(arviz.from_dict(
     reference_values_kwargs=dict(marker='X', markersize=25, color='darkgrey',
                                  markerfacecolor='tab:red',
                                  markeredgecolor='grey'))
-plt.savefig("../data/figure_s10.png")
+plt.savefig("../out/figure_s10.png", dpi=150)
+plt.savefig("../out/figure_s10.svg")
 
 
 def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
@@ -72,7 +73,8 @@ def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
 
 
 plot(simulator, samples[0, np.random.randint(0, 24_000, 500)], n_times=100, until=150, n_per_row=5)
-plt.savefig("../data/figure_s11.png", dpi=300)
+plt.savefig("../out/figure_s11.png", dpi=300)
+plt.savefig("../out/figure_s11.svg")
 
 
 
