@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<fluxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.13cflux.net/fluxml http://www.13cflux.net/fluxml" xmlns="http://www.13cflux.net/fluxml">
+<fluxml xmlns="http://www.13cflux.net/fluxml">
   <info>
     <name>Syn</name>
     <date>2027-08-17 09:51:35</date>
