@@ -88,7 +88,7 @@ for sample_i in range(len(samples)):
     for inst_i, stat_i in zip (inst_order, stat_order):
         m=np.max([m, np.max(np.abs(r[sample_i][0][inst_i] - r_stat[0][stat_i]))])
     diffs.append(m)
-print(f"Maximum Difference between any INST and the corresponding STAT measurement: {np.max(diffs):.2f}")
+print(f"Maximum difference between any INST and the corresponding STAT measurement: {np.max(diffs):4.2f}")
 
 plt.figure(figsize=(6.4,4.8))
 plt.hist(diffs, bins=np.logspace(-13,-5,25), weights=np.ones(len(diffs))/ len(diffs), color=C_X3)

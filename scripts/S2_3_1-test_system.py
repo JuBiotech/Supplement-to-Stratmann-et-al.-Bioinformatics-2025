@@ -47,7 +47,7 @@ for name in ["bdf", "sdirk"]:
         simulator.builder.solver.relative_tolerance = np.power(10., -j)
         simulator.builder.solver.absolute_tolerance = np.power(10., -(j+3))
         cond, errors = [], []
-        print(f"\tsolving for solver tolerance 10^{-j}")
+        print(f"\tsolving for solver tolerance 1e{-j}")
         for i in np.linspace(1, 3, 25):
             val = 10 ** i
             new_params = [1., val, 1., 1 / val]

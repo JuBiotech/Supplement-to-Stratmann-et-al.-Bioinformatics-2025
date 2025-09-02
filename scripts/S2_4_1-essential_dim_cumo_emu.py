@@ -58,7 +58,7 @@ def time_increasing_measurement_simulations(network_data, config, samples):
         incr_meas_list = meas_list[:n_param_meas]
         for i in range(n_param_meas, len(config.measurements)):
             curr_meas = meas_list[i]
-            print(f"\t\tAdding measurement {i}/{len(config.measurements)}: {curr_meas.name}")
+            print(f"\t\tAdding measurement {i + 1 - n_param_meas}/{len(config.measurements) - n_param_meas}: {curr_meas.name}")
 
             if type == "Tandem MS":
                 n = curr_meas.num_atoms
@@ -92,13 +92,14 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     axs[0, 0].errorbar(ms_times_stat[0][1:, 0], ms_times_stat[0][1:, 1], yerr=ms_times_stat[0][1:, 2], label="cumomer",
                     marker="o", ls="", color="tab:blue")
     result = stats.linregress(ms_times_stat[0][1:, 0], ms_times_stat[0][1:, 1])
-    print(f"cumomer: r-squared = {result.rvalue}")
+    print("IST MS")
+    print(f"\tcumomer: R² = {result.rvalue}:.4f")
     x = np.linspace(ms_times_stat[0][1:, 0].min()-200, ms_times_stat[0][1:, 0].max()+100, 100)
     axs[0, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:blue")
     axs[0, 0].errorbar(ms_times_stat[1][1:, 0], ms_times_stat[1][1:, 1], yerr=ms_times_stat[1][1:, 2], label="EMU",
                     marker="o", ls="", color="tab:orange")
     result = stats.linregress(ms_times_stat[1][1:,0], ms_times_stat[1][1:, 1])
-    print(f"EMU: r-squared = {result.rvalue}")
+    print(f"\tEMU: R² = {result.rvalue:.4f}")
     x = np.linspace(ms_times_stat[1][1:, 0].min()-50, ms_times_stat[1][1:, 0].max()+100, 100)
     axs[0, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[0, 0].set_ylabel("$\\leftarrow$ IST runtime [ms]")
@@ -106,33 +107,35 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     #axs[0, 0].set_ylim((0, 3))
     axs[0, 0].legend()
 
+    print("IST MSMS")
     axs[0, 1].set_title("MS/MS")
     axs[0, 1].errorbar(msms_times_stat[0][1:, 0], msms_times_stat[0][1:, 1], yerr=msms_times_stat[0][1:, 2], label="cumomer",
                     marker="o", ls="", color="tab:blue")
     result = stats.linregress(msms_times_stat[0][1:, 0], msms_times_stat[0][1:, 1])
-    print(f"cumomer: r-squared = {result.rvalue}")
+    print(f"\tcumomer: R² = {result.rvalue}:.4f")
     x = np.linspace(msms_times_stat[0][1:, 0].min()-100, msms_times_stat[0][1:, 0].max()+100, 100)
     axs[0, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:blue")
     axs[0, 1].errorbar(msms_times_stat[1][1:, 0], msms_times_stat[1][1:, 1], yerr=msms_times_stat[1][1:, 2], label="EMU",
                     marker="o", ls="", color="tab:orange")
     result = stats.linregress(msms_times_stat[1][1:, 0], msms_times_stat[1][1:, 1])
-    print(f"EMU: r-squared = {result.rvalue}")
+    print(f"\tEMU: R² = {result.rvalue:.4f}")
     x = np.linspace(msms_times_stat[1][1:, 0].min()-100, msms_times_stat[1][1:, 0].max()+100, 100)
     axs[0, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[0, 1].set_xlim((200, 1950))
     #axs[0, 1].set_ylim((0, 3))
 
     # INST
+    print("INST MS")
     axs[1, 0].errorbar(ms_times_inst[0][1:, 0], ms_times_inst[0][1:, 1], yerr=ms_times_inst[0][1:,2], label="cumomer",
                     marker="o", ls="", color="tab:blue")
     result = stats.linregress(ms_times_inst[0][1:, 0], ms_times_inst[0][1:, 1])
-    print(f"cumomer: r-squared = {result.rvalue}")
+    print(f"\tcumomer: R² = {result.rvalue:.4f}")
     x = np.linspace(ms_times_inst[0][1:, 0].min()-200, ms_times_inst[0][1:, 0].max()+100, 100)
     axs[1, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:blue")
     axs[1, 0].errorbar(ms_times_inst[1][1:, 0], ms_times_inst[1][1:, 1], yerr=ms_times_inst[1][1:,2], label="EMU",
                     marker="o", ls="", color="tab:orange")
     result = stats.linregress(ms_times_inst[1][1:, 0], ms_times_inst[1][1:, 1])
-    print(f"EMU: r-squared = {result.rvalue}")
+    print(f"\tEMU: R² = {result.rvalue:.4f}")
     x = np.linspace(ms_times_inst[1][1:, 0].min()-50, ms_times_inst[1][1:, 0].max()+100, 100)
     axs[1, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[1, 0].set_xlabel("essential dimension")
@@ -140,16 +143,17 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     #axs[1, 0].set_ylim((0, 200))
     axs[1, 0].set_xlabel("essential dimension")
 
+    print("INST MSMS")
     axs[1, 1].errorbar(msms_times_inst[0][1:, 0], msms_times_inst[0][1:, 1], yerr=msms_times_inst[0][1:, 2], label="cumomer",
                     marker="o", ls="", color="tab:blue")
     result = stats.linregress(msms_times_inst[0][1:, 0], msms_times_inst[0][1:, 1])
-    print(f"cumomer: r-squared = {result.rvalue}")
+    print(f"\tcumomer: R² = {result.rvalue:.4}")
     x = np.linspace(msms_times_inst[0][1:, 0].min()-100, msms_times_inst[0][1:, 0].max()+100, 100)
     axs[1, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:blue")
     axs[1, 1].errorbar(msms_times_inst[1][1:, 0], msms_times_inst[1][1:, 1], yerr=msms_times_inst[1][1:,2], label="EMU",
                     marker="o", ls="", color="tab:orange")
     result = stats.linregress(msms_times_inst[1][1:, 0], msms_times_inst[1][1:, 1])
-    print(f"EMU: r-squared = {result.rvalue}")
+    print(f"EMU: R² = {result.rvalue:.4}")
     x = np.linspace(msms_times_inst[1][1:, 0].min()-100, msms_times_inst[1][1:,0].max()+100, 100)
     axs[1, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     #axs[1, 1].set_ylim((0, 200))
