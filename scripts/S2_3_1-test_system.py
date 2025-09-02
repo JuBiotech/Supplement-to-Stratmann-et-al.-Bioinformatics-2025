@@ -25,7 +25,7 @@ def global_error(jac, rhs, solution):
 
 print("\n")
 util.print_full_line()
-print(f"Executing {os.path.basename(__file__)}\n")
+util.print_box(f"Executing {os.path.basename(__file__)}")
 x3cflux.logging.level = 0
 simulator = x3cflux.create_simulator_from_fml("../models/linea.fml")
 simulator.parameter_space.free_parameter_names
