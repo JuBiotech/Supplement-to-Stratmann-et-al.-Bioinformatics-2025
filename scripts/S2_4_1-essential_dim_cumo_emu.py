@@ -49,7 +49,7 @@ def time_increasing_measurement_simulations(network_data, config, samples):
 
     times = []
     for type in ["Tandem MS", "MS"]:
-        print(f"\tFor {type} measurements")
+        print(f"\tSimulation for {type} measurements")
         cumo_times = np.zeros((len(config.measurements) - n_param_meas + 1, 3))
         emu_times = np.zeros((len(config.measurements) - n_param_meas + 1, 3))
         cumo_times[0] = time_measurement_simulation(meas_list[:n_param_meas], network_data, config, samples, "cumomer")
@@ -93,13 +93,13 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
                     marker="o", ls="", color="tab:blue")
     result = stats.linregress(ms_times_stat[0][1:, 0], ms_times_stat[0][1:, 1])
     print("IST MS")
-    print(f"\tcumomer: R² = {result.rvalue}:.4f")
+    print(f"\tcumomer: R² = {result.rvalue:.4f}")
     x = np.linspace(ms_times_stat[0][1:, 0].min()-200, ms_times_stat[0][1:, 0].max()+100, 100)
     axs[0, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:blue")
     axs[0, 0].errorbar(ms_times_stat[1][1:, 0], ms_times_stat[1][1:, 1], yerr=ms_times_stat[1][1:, 2], label="EMU",
                     marker="o", ls="", color="tab:orange")
     result = stats.linregress(ms_times_stat[1][1:,0], ms_times_stat[1][1:, 1])
-    print(f"\tEMU: R² = {result.rvalue:.4f}")
+    print(f"\tEMU    : R² = {result.rvalue:.4f}")
     x = np.linspace(ms_times_stat[1][1:, 0].min()-50, ms_times_stat[1][1:, 0].max()+100, 100)
     axs[0, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[0, 0].set_ylabel("$\\leftarrow$ IST runtime [ms]")
@@ -112,13 +112,13 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     axs[0, 1].errorbar(msms_times_stat[0][1:, 0], msms_times_stat[0][1:, 1], yerr=msms_times_stat[0][1:, 2], label="cumomer",
                     marker="o", ls="", color="tab:blue")
     result = stats.linregress(msms_times_stat[0][1:, 0], msms_times_stat[0][1:, 1])
-    print(f"\tcumomer: R² = {result.rvalue}:.4f")
+    print(f"\tcumomer: R² = {result.rvalue:.4f}")
     x = np.linspace(msms_times_stat[0][1:, 0].min()-100, msms_times_stat[0][1:, 0].max()+100, 100)
     axs[0, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:blue")
     axs[0, 1].errorbar(msms_times_stat[1][1:, 0], msms_times_stat[1][1:, 1], yerr=msms_times_stat[1][1:, 2], label="EMU",
                     marker="o", ls="", color="tab:orange")
     result = stats.linregress(msms_times_stat[1][1:, 0], msms_times_stat[1][1:, 1])
-    print(f"\tEMU: R² = {result.rvalue:.4f}")
+    print(f"\tEMU    : R² = {result.rvalue:.4f}")
     x = np.linspace(msms_times_stat[1][1:, 0].min()-100, msms_times_stat[1][1:, 0].max()+100, 100)
     axs[0, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[0, 1].set_xlim((200, 1950))
@@ -135,7 +135,7 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     axs[1, 0].errorbar(ms_times_inst[1][1:, 0], ms_times_inst[1][1:, 1], yerr=ms_times_inst[1][1:,2], label="EMU",
                     marker="o", ls="", color="tab:orange")
     result = stats.linregress(ms_times_inst[1][1:, 0], ms_times_inst[1][1:, 1])
-    print(f"\tEMU: R² = {result.rvalue:.4f}")
+    print(f"\tEMU    : R² = {result.rvalue:.4f}")
     x = np.linspace(ms_times_inst[1][1:, 0].min()-50, ms_times_inst[1][1:, 0].max()+100, 100)
     axs[1, 0].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     axs[1, 0].set_xlabel("essential dimension")
@@ -153,7 +153,7 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     axs[1, 1].errorbar(msms_times_inst[1][1:, 0], msms_times_inst[1][1:, 1], yerr=msms_times_inst[1][1:,2], label="EMU",
                     marker="o", ls="", color="tab:orange")
     result = stats.linregress(msms_times_inst[1][1:, 0], msms_times_inst[1][1:, 1])
-    print(f"EMU: R² = {result.rvalue:.4}")
+    print(f"\tEMU    : R² = {result.rvalue:.4}")
     x = np.linspace(msms_times_inst[1][1:, 0].min()-100, msms_times_inst[1][1:,0].max()+100, 100)
     axs[1, 1].plot(x, result.slope * x + result.intercept, ls="--", color="tab:orange")
     #axs[1, 1].set_ylim((0, 200))
@@ -235,7 +235,7 @@ simulator = x3cflux.create_simulator_from_data(data.network_data, data.configura
 ineq_sys = simulator.parameter_space.inequality_system
 problem = hopsy.Problem(ineq_sys.matrix, ineq_sys.bound)
 problem = hopsy.add_box_constraints(problem, 12 * [-200.] + 23 * [1e-6], 12 * [200.] + 23 * [1000])
-print(f"\tDrawing {n_samples} with hopsy")
+print(f"\tDrawing {n_samples} samples with hopsy")
 samples = hopsy.sample(hopsy.MarkovChain(problem, hopsy.UniformCoordinateHitAndRunProposal),
                        hopsy.RandomNumberGenerator(42),
                        n_samples=n_samples, thinning=int(60 ** 2 // 6))[1].reshape((n_samples, -1))
