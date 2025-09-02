@@ -36,7 +36,7 @@ for tol in tols:
         after = perf_counter()
         time = after-before
         times.loc[i, tol] = time
-    print(f"\t{time} s")
+    print(f"\taverage runtime {times.[tol].mean()*1000:.2f} ms")
 
 xs = -np.log10(times.columns.to_numpy(dtype=float))
 means = np.array(times.mean(axis=0).values, dtype=float)

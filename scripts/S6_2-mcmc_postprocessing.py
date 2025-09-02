@@ -6,30 +6,6 @@ import matplotlib.pyplot as plt
 import arviz
 import x3cflux
 
-simulator = x3cflux.create_simulator_from_fml("../models/Syn.fml", "bayes")
-
-mle = x3cflux.get_parameters(simulator.parameter_space, simulator.configurations[0].parameter_entries)
-
-samples = np.zeros((4, 24000, 60))
-
-for i in range(4):
-    for j in range(2):
-        print(f"../data/results_{i}_{j}.npz")
-        samples[i, j * 12000:(j + 1) * 12000] = np.load(f"../data/results_{i}_{j}.npz")["samples"][0]
-
-idx = [2, 5, 1, 26, 54]
-arviz.plot_pair(arviz.from_dict(
-    {simulator.parameter_space.free_parameter_names[i]: samples[:, :, i].flatten() for i in idx}),
-    kind="kde", textsize=25,
-    marginals=True, #marginal_kwargs={"quantiles": [0.05, 0.95]},
-    var_names=[simulator.parameter_space.free_parameter_names[i] for i in idx],
-    reference_values={simulator.parameter_space.free_parameter_names[i]:mle[i] for i in idx},
-    reference_values_kwargs=dict(marker='X', markersize=25, color='darkgrey',
-                                 markerfacecolor='tab:red',
-                                 markeredgecolor='grey'))
-plt.savefig("../out/figure_s10.png", dpi=150)
-plt.savefig("../out/figure_s10.svg")
-
 
 def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
     meas_names = simulator.measurement_names[0]
@@ -70,6 +46,32 @@ def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
     fig.text(0.09, 0.5, 'fractional enrichment', ha='center', va='center', rotation='vertical', fontsize=18)
     plt.xlim((0, until))
     plt.ylim((0, 1))
+    
+
+util.print_box(f"Executing {os.path.basename(__file__)}")
+x3cflux.logging.level = 0
+simulator = x3cflux.create_simulator_from_fml("../models/Syn.fml", "bayes")
+mle = x3cflux.get_parameters(simulator.parameter_space, simulator.configurations[0].parameter_entries)
+
+samples = np.zeros((4, 24000, 60))
+
+for i in range(4):
+    for j in range(2):
+        print(f"../data/results_{i}_{j}.npz")
+        samples[i, j * 12000:(j + 1) * 12000] = np.load(f"../data/results_{i}_{j}.npz")["samples"][0]
+
+idx = [2, 5, 1, 26, 54]
+arviz.plot_pair(arviz.from_dict(
+    {simulator.parameter_space.free_parameter_names[i]: samples[:, :, i].flatten() for i in idx}),
+    kind="kde", textsize=25,
+    marginals=True, #marginal_kwargs={"quantiles": [0.05, 0.95]},
+    var_names=[simulator.parameter_space.free_parameter_names[i] for i in idx],
+    reference_values={simulator.parameter_space.free_parameter_names[i]:mle[i] for i in idx},
+    reference_values_kwargs=dict(marker='X', markersize=25, color='darkgrey',
+                                 markerfacecolor='tab:red',
+                                 markeredgecolor='grey'))
+plt.savefig("../out/figure_s10.png", dpi=150)
+plt.savefig("../out/figure_s10.svg")
 
 
 plot(simulator, samples[0, np.random.randint(0, 24_000, 500)], n_times=100, until=150, n_per_row=5)

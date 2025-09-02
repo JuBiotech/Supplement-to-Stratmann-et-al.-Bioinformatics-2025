@@ -25,7 +25,7 @@ def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
     inner_width = max(max_line_len + 2 * padding, min_width)
 
     # Top border
-    print(f"{TL}{H * inner_width}{TR}")
+    print(f"\n{TL}{H * inner_width}{TR}")
 
     # Content lines (center each input line)
     for line in lines:
