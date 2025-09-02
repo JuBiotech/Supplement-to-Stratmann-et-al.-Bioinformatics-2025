@@ -36,14 +36,14 @@ for tol in tols:
         after = perf_counter()
         time = after-before
         times.loc[i, tol] = time
-    print(f"\taverage runtime {times.[tol].mean()*1000:.2f} ms")
+    print(f"\taverage runtime {times[tol].mean()*1000:.2f} ms")
 
 xs = -np.log10(times.columns.to_numpy(dtype=float))
 means = np.array(times.mean(axis=0).values, dtype=float)
 ys = np.log10(means)
 model = LinearRegression()
 model.fit(xs.reshape(-1, 1),  ys)
-print(f"a tolerance decrease of 1 order of magnitude leads to a {(1-model.coef_[0])*100:.0f}% runtime increase")
+print(f"a tolerance decrease of 1 order of magnitude leads to a {(np.power10(model.coef_[0])-1)*100:.0f}% runtime increase")
 x3_y=model.predict([[1],[14]])
 
 csv_file = "../out/figure_s9_raw.csv"
