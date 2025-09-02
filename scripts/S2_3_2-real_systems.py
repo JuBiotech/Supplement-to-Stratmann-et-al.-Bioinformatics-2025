@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 import time
+import os
 import util
 
 plt.rcParams["font.size"] = 16

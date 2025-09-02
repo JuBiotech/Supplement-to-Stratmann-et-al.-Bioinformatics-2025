@@ -24,7 +24,6 @@ def global_error(jac, rhs, solution):
     return np.max(errors)
 
 print("\n")
-util.print_full_line()
 util.print_box(f"Executing {os.path.basename(__file__)}")
 x3cflux.logging.level = 0
 simulator = x3cflux.create_simulator_from_fml("../models/linea.fml")
@@ -34,7 +33,7 @@ tau = Symbol("tau")
 A = Symbol("A")
 a = Function("a")
 b = Function("b")
-print("\tSolving system manually")
+print("Solving system manually")
 system = [Derivative(b(x), x) + (tau + 1) * b(x) - (tau +1) * a(x),
           A * Derivative(a(x), x) - tau * b(x) + (tau + 1) * a(x) - 1]
 result = dsolve(system, ics={a(0.): 0.01109, b(0.): 0.01109})
@@ -43,12 +42,12 @@ data = {}
 for name in ["bdf", "sdirk"]:
     simulator.builder.set_solver(name)
     data.update({name: {}})
-    print(f"\tSolving system with x3cflux using {name} solver")
+    print(f"Solving system with x3cflux using {name} solver")
     for j in [3, 6, 9]:
         simulator.builder.solver.relative_tolerance = np.power(10., -j)
         simulator.builder.solver.absolute_tolerance = np.power(10., -(j+3))
         cond, errors = [], []
-        print(f"\t\tsolving for solver tolerance 10^{-j}")
+        print(f"\tsolving for solver tolerance 10^{-j}")
         for i in np.linspace(1, 3, 25):
             val = 10 ** i
             new_params = [1., val, 1., 1 / val]
@@ -76,6 +75,6 @@ plt.xlim((2e2, 2e6))
 plt.legend(loc='upper left', bbox_to_anchor=(1.02, 1), borderaxespad=0)
 plt.tight_layout()
 filename = "../out/figure_s01"
-print(f"\tsaving to {filename}")
+print(f"saving to {filename}")
 plt.savefig(filename + ".png", dpi=150)
 plt.savefig(filename + ".svg")
