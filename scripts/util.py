@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# coding: utf-8import os
+# coding: utf-8
 
 import shutil
-import sys
 
 def terminal_width(default: int = 80) -> int:
     """Return current terminal width, fallback to default."""

@@ -75,7 +75,7 @@ plt.ylabel("global error")
 plt.xlim((2e2, 2e6))
 plt.legend(loc='upper left', bbox_to_anchor=(1.02, 1), borderaxespad=0)
 plt.tight_layout()
-filename = "../out/figure_s01")
+filename = "../out/figure_s01"
 print(f"\tsaving to {filename}")
 plt.savefig(filename + ".png", dpi=150)
 plt.savefig(filename + ".svg")
