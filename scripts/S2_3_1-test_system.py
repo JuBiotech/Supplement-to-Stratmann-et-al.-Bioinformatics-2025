@@ -5,19 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sympy import Function, dsolve, Derivative, Symbol
 from sympy.abc import x
+import os
+import util
 plt.rcParams['font.size'] = 16
 plt.rcParams['figure.figsize'][0] = 10
-
-simulator = x3cflux.create_simulator_from_fml("../models/linea.fml")
-simulator.parameter_space.free_parameter_names
-
-tau = Symbol("tau")
-A = Symbol("A")
-a = Function("a")
-b = Function("b")
-system = [Derivative(b(x), x) + (tau + 1) * b(x) - (tau +1) * a(x),
-          A * Derivative(a(x), x) - tau * b(x) + (tau + 1) * a(x) - 1]
-result = dsolve(system, ics={a(0.): 0.01109, b(0.): 0.01109})
 
 def global_error(jac, rhs, solution):
     a = Function("a")
@@ -32,15 +23,32 @@ def global_error(jac, rhs, solution):
                             axis=1)
     return np.max(errors)
 
+print("\n")
+util.print_full_line()
+print("\n")
+print(f"Executing {os.path.basename(__file__)}\n")
+x3cflux.logging.level = 0
+simulator = x3cflux.create_simulator_from_fml("../models/linea.fml")
+simulator.parameter_space.free_parameter_names
+
+tau = Symbol("tau")
+A = Symbol("A")
+a = Function("a")
+b = Function("b")
+system = [Derivative(b(x), x) + (tau + 1) * b(x) - (tau +1) * a(x),
+          A * Derivative(a(x), x) - tau * b(x) + (tau + 1) * a(x) - 1]
+result = dsolve(system, ics={a(0.): 0.01109, b(0.): 0.01109})
+
 data = {}
 for name in ["bdf", "sdirk"]:
     simulator.builder.set_solver(name)
     data.update({name: {}})
+    print(f"\tUsing {name} solver")
     for j in [3, 6, 9]:
         simulator.builder.solver.relative_tolerance = np.power(10., -j)
         simulator.builder.solver.absolute_tolerance = np.power(10., -(j+3))
         cond, errors = [], []
-        print(j)
+        print(f"\t\tsolving for solver tolerance 10^{-j}")
         for i in np.linspace(1, 3, 25):
             val = 10 ** i
             new_params = [1., val, 1., 1 / val]
@@ -67,5 +75,7 @@ plt.ylabel("global error")
 plt.xlim((2e2, 2e6))
 plt.legend(loc='upper right', bbox_to_anchor=(1.5, 1))
 plt.tight_layout()
-plt.savefig("../out/figure_s1.png", dpi=150)
-plt.savefig("../out/figure_s1.svg")
+filename = "../out/figure_s01")
+print(f"\tsaving to {filename}")
+plt.savefig(filename + ".png", dpi=150)
+plt.savefig(filename + ".svg")
