@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import arviz
 import x3cflux
+import util
 
 
 def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
@@ -46,7 +47,7 @@ def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
     fig.text(0.09, 0.5, 'fractional enrichment', ha='center', va='center', rotation='vertical', fontsize=18)
     plt.xlim((0, until))
     plt.ylim((0, 1))
-    
+
 
 util.print_box(f"Executing {os.path.basename(__file__)}")
 x3cflux.logging.level = 0
@@ -57,8 +58,9 @@ samples = np.zeros((4, 24000, 60))
 
 for i in range(4):
     for j in range(2):
-        print(f"../data/results_{i}_{j}.npz")
-        samples[i, j * 12000:(j + 1) * 12000] = np.load(f"../data/results_{i}_{j}.npz")["samples"][0]
+        fn = f"../data/results_{i}_{j}.npz"
+        print(f"Reading data from {fn}")
+        samples[i, j * 12000:(j + 1) * 12000] = np.load(fn)["samples"][0]
 
 idx = [2, 5, 1, 26, 54]
 arviz.plot_pair(arviz.from_dict(
@@ -70,13 +72,19 @@ arviz.plot_pair(arviz.from_dict(
     reference_values_kwargs=dict(marker='X', markersize=25, color='darkgrey',
                                  markerfacecolor='tab:red',
                                  markeredgecolor='grey'))
-plt.savefig("../out/figure_s10.png", dpi=150)
-plt.savefig("../out/figure_s10.svg")
+plt.tight_layout()
+filename = "../out/figure_s10"
+print(f"saving to {filename}")
+plt.savefig(filename + ".png", dpi=300)
+plt.savefig(filename + ".svg")
 
 
 plot(simulator, samples[0, np.random.randint(0, 24_000, 500)], n_times=100, until=150, n_per_row=5)
-plt.savefig("../out/figure_s11.png", dpi=300)
-plt.savefig("../out/figure_s11.svg")
+plt.tight_layout()
+filename = "../out/figure_s11"
+print(f"saving to {filename}")
+plt.savefig(filename + ".png", dpi=300)
+plt.savefig(filename + ".svg")
 
 
 
