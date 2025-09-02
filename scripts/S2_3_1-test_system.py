@@ -23,7 +23,6 @@ def global_error(jac, rhs, solution):
                             axis=1)
     return np.max(errors)
 
-print("\n")
 util.print_box(f"Executing {os.path.basename(__file__)}")
 x3cflux.logging.level = 0
 simulator = x3cflux.create_simulator_from_fml("../models/linea.fml")

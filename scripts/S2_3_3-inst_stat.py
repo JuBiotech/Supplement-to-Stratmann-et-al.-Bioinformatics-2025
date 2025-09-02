@@ -4,9 +4,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 import sys
+import os
+import util
 
-plt.rcParams['font.size'] = 16
-C_X3 = '#023d6b'
 
 def mask_to_num(mask: str):
     changes = []
@@ -36,6 +36,11 @@ def mask_to_num(mask: str):
     if state:
         out += f"-{len(mask)}"
     return f"[{out}]"
+    
+util.print_box(f"Executing {os.path.basename(__file__)}")
+plt.rcParams['font.size'] = 16
+C_X3 = '#023d6b'
+x3cflux.logging.level = 0
 
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
 config_names = [i.name for i in data.configurations]
@@ -57,19 +62,13 @@ samples = pd.read_csv("../data/poolsize_samples.csv", header=None).to_numpy()
 
 total = len(samples)
 print(f"simulating {total} INST samples")
-bar_len = 80
 r = [None]*total
 for i,s in enumerate(samples):
     params[35:91] = s
     temp = simulator_inst.compute_measurements(params = params, time_stamps=[10_000_000])
     r[i] = temp
     # build & print bar
-    idx = i + 1
-    filled = int(bar_len * idx / total)
-    bar = '#' * filled + '-' * (bar_len - filled)
-    pct = idx / total * 100
-    sys.stdout.write(f'\r[{bar}] {pct:5.1f}% ({idx}/{total})')
-    sys.stdout.flush()
+    util.progress_bar(i+1, total)
 print("")
 
 inst_names = {x.name: f"{x.metabolite_name}{mask_to_num(x.specification.mask)}" for x in simulator_inst.configurations[0].measurements if x.name in simulator_inst.measurement_names[0]}
@@ -89,7 +88,7 @@ for sample_i in range(len(samples)):
     for inst_i, stat_i in zip (inst_order, stat_order):
         m=np.max([m, np.max(np.abs(r[sample_i][0][inst_i] - r_stat[0][stat_i]))])
     diffs.append(m)
-print(f"Maximum Difference: {np.max(diffs)}")
+print(f"Maximum Difference between any INST and the corresponding STAT measurement: {np.max(diffs)}")
 
 plt.figure(figsize=(6.4,4.8))
 plt.hist(diffs, bins=np.logspace(-13,-5,25), weights=np.ones(len(diffs))/ len(diffs), color=C_X3)
@@ -102,5 +101,7 @@ ylims=plt.ylim()
 plt.vlines(1e-6, ymin=ylims[0], ymax=ylims[1], color='k', linestyle='dashed', label='simulator\ntolerance')
 plt.ylim(ylims)
 plt.tight_layout()
-plt.savefig('../out/figure_s3.png', dpi=150)
-plt.savefig('../out/figure_s3.svg')
+filename = "../out/figure_s03"
+print(f"saving to {filename}")
+plt.savefig(filename + ".png", dpi=150)
+plt.savefig(filename + ".svg")

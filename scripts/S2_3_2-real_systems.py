@@ -9,9 +9,6 @@ import time
 import os
 import util
 
-plt.rcParams["font.size"] = 16
-x3cflux.logging.level = 0
-
 def supremum_norm(x, y):
     errors = np.zeros(len(x))
     for i in range(len(x)):
@@ -43,8 +40,9 @@ def run_benchmark(simulator, reference_solutions, time_grid, samples):
     return errors, times
 
 
-print("\n")
 util.print_box(f"Executing {os.path.basename(__file__)}")
+plt.rcParams["font.size"] = 16
+x3cflux.logging.level = 0
 simulator = x3cflux.create_simulator_from_fml("../models/Syn.fml", "a")
 ineq_sys = simulator.parameter_space.inequality_system
 simulator.builder.solver.num_max_steps = 1_000_000

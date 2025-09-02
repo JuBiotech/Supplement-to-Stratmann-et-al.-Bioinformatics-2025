@@ -7,8 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 import scipy.stats as stats
-
-plt.rcParams["font.size"] = 16
+import util
+import os
 
 
 def time_measurement_simulation(measurements, network_data, exp_config, samples, method="emu"):
@@ -49,18 +49,16 @@ def time_increasing_measurement_simulations(network_data, config, samples):
 
     times = []
     for type in ["Tandem MS", "MS"]:
-        print(type)
+        print(f"\tFor {type} measurements")
         cumo_times = np.zeros((len(config.measurements) - n_param_meas + 1, 3))
         emu_times = np.zeros((len(config.measurements) - n_param_meas + 1, 3))
-
-        print([meas_list[i].name for i in range(n_param_meas)])
         cumo_times[0] = time_measurement_simulation(meas_list[:n_param_meas], network_data, config, samples, "cumomer")
         emu_times[0] = time_measurement_simulation(meas_list[:n_param_meas], network_data, config, samples, "emu")
 
         incr_meas_list = meas_list[:n_param_meas]
         for i in range(n_param_meas, len(config.measurements)):
             curr_meas = meas_list[i]
-            print(curr_meas.name)
+            print(f"\t\tAdding measurement {i}/{len(config.measurements)}: {curr_meas.name}")
 
             if type == "Tandem MS":
                 n = curr_meas.num_atoms
@@ -165,8 +163,10 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
     #axs[1].set_ylabel("essential dimension")
 
     plt.tight_layout()
-    plt.savefig(f"../out/figure_s5.png", dpi=150)
-    plt.savefig(f"../out/figure_s5.svg")
+    filename = "../out/figure_s05"
+    print(f"saving to {filename}")
+    plt.savefig(filename + ".png", dpi=150)
+    plt.savefig(filename + ".svg")
 
 
 def plot_total_essential_dimension(msms_times_stat, ms_times_stat, msms_times_inst, ms_times_inst):
@@ -209,9 +209,15 @@ def plot_total_essential_dimension(msms_times_stat, ms_times_stat, msms_times_in
 
     fig.supxlabel("measurement configurations", y=0.03)
     plt.tight_layout()
-    plt.savefig(f"../out/figure_s4.png", dpi=150)
-    plt.savefig(f"../out/figure_s4.svg")
+    filename = "../out/figure_s04"
+    print(f"saving to {filename}")
+    plt.savefig(filename + ".png", dpi=150)
+    plt.savefig(filename + ".svg")
 
+
+util.print_box(f"Executing {os.path.basename(__file__)}")
+plt.rcParams["font.size"] = 16
+x3cflux.logging.level = 0
 
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
 config_names = [i.name for i in data.configurations]
@@ -220,22 +226,26 @@ config_index_inst = config_names.index("a_INST")
 
 n_samples = 1000
 
+print("Evaluating IST Problem")
 simulator = x3cflux.create_simulator_from_data(data.network_data, data.configurations[config_index_stat])
 ineq_sys = simulator.parameter_space.inequality_system
 problem = hopsy.Problem(ineq_sys.matrix, ineq_sys.bound)
 problem = hopsy.add_box_constraints(problem, 12 * [-200.] + 23 * [1e-6], 12 * [200.] + 23 * [1000])
+print(f"\tDrawing {n_samples} with hopsy")
 samples = hopsy.sample(hopsy.MarkovChain(problem, hopsy.UniformCoordinateHitAndRunProposal),
                        hopsy.RandomNumberGenerator(42),
                        n_samples=n_samples, thinning=int(60 ** 2 // 6))[1].reshape((n_samples, -1))
 
 msms_times_stat, ms_times_stat = time_increasing_measurement_simulations(data.network_data, data.configurations[config_index_stat], samples)
 
+print("Evaluating INST Problem")
 simulator = x3cflux.create_simulator_from_data(data.network_data, data.configurations[config_index_inst])
 ineq_sys = simulator.parameter_space.inequality_system
 problem = hopsy.Problem(ineq_sys.matrix, ineq_sys.bound)
 problem = hopsy.add_box_constraints(problem,
                                     12 * [-200.] + 23 * [1e-6] + 56 * [1e-6],
                                     12 * [200.] + 23 * [1000] + 56 * [1e-1])
+print(f"\tDrawing {n_samples} with hopsy")
 samples = hopsy.sample(hopsy.MarkovChain(problem, hopsy.UniformCoordinateHitAndRunProposal),
                        hopsy.RandomNumberGenerator(42),
                        n_samples=n_samples, thinning=int(60 ** 2 // 6))[1].reshape((n_samples, -1))
