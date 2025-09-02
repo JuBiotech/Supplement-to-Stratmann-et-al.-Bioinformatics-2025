@@ -2,6 +2,7 @@
 # coding: utf-8
 import sys
 
+
 def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
     """
     Print `text` centered in a nice double-line box using Unicode box-drawing chars.
@@ -16,8 +17,8 @@ def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
     TR = "╗"
     BL = "╚"
     BR = "╝"
-    H  = "═"
-    V  = "║"
+    H = "═"
+    V = "║"
 
     # Split input into lines and compute inner width
     lines = text.splitlines() or [""]
@@ -41,8 +42,7 @@ def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
 
 def progress_bar(idx: int, total: int, bar_len: int = 80) -> None:
     filled = int(bar_len * idx / total)
-    bar = '#' * filled + '-' * (bar_len - filled)
+    bar = "#" * filled + "-" * (bar_len - filled)
     pct = idx / total * 100
-    sys.stdout.write(f'\r[{bar}] {pct:5.1f}% ({idx}/{total})')
+    sys.stdout.write(f"\r[{bar}] {pct:5.1f}% ({idx}/{total})")
     sys.stdout.flush()
-

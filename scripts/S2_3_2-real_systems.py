@@ -9,6 +9,7 @@ import time
 import os
 import util
 
+
 def supremum_norm(x, y):
     errors = np.zeros(len(x))
     for i in range(len(x)):
@@ -22,7 +23,9 @@ def run_benchmark(simulator, reference_solutions, time_grid, samples):
     times = np.zeros(n_samples)
     for i in range(n_samples):
         start = time.perf_counter()
-        label_meas, _ = simulator.compute_measurements(samples[i], time_stamps=time_grid)
+        label_meas, _ = simulator.compute_measurements(
+            samples[i], time_stamps=time_grid
+        )
         times[i] = time.perf_counter() - start
 
         n_times = len(time_grid)
@@ -36,7 +39,9 @@ def run_benchmark(simulator, reference_solutions, time_grid, samples):
                 y = np.concatenate((y, label_meas[j + k * n_times]))
             reference_trajectory.append(x)
             simulator_trajectory.append(y)
-        errors[i] = supremum_norm(np.array(reference_trajectory), np.array(simulator_trajectory))
+        errors[i] = supremum_norm(
+            np.array(reference_trajectory), np.array(simulator_trajectory)
+        )
     return errors, times
 
 
@@ -55,22 +60,26 @@ print("Compute high-accuracy solution (this might take a while)")
 simulator.builder.set_solver("sdirk")
 simulator.builder.solver.relative_tolerance = 1e-12
 simulator.builder.solver.absolute_tolerance = 1e-15
-time_grid = np.linspace(0., 610., num=1_000)
-reference_solutions = [simulator.compute_measurements(samples[i], time_stamps=time_grid)
-                           for i in range(n_samples)]
+time_grid = np.linspace(0.0, 610.0, num=1_000)
+reference_solutions = [
+    simulator.compute_measurements(samples[i], time_stamps=time_grid)
+    for i in range(n_samples)
+]
 
 bdf_errors, bdf_times = [], []
 sdirk_errors, sdirk_times = [], []
 max_tol = 12
 print("Compute solutions with increasing strict tolerances")
 for rel_tol in range(3, max_tol):
-    print(f"\trel tol = {np.power(10., -rel_tol):.0e}")
+    print(f"\trel tol = {np.power(10.0, -rel_tol):.0e}")
     for solver_name in ["bdf", "sdirk"]:
         simulator.builder.set_solver(solver_name)
-        simulator.builder.solver.relative_tolerance = np.power(10., -rel_tol)
-        simulator.builder.solver.absolute_tolerance = np.power(10., -(rel_tol + 3))
-        loc_errors, times = run_benchmark(simulator, reference_solutions, time_grid, samples)
-        if solver_name=="bdf":
+        simulator.builder.solver.relative_tolerance = np.power(10.0, -rel_tol)
+        simulator.builder.solver.absolute_tolerance = np.power(10.0, -(rel_tol + 3))
+        loc_errors, times = run_benchmark(
+            simulator, reference_solutions, time_grid, samples
+        )
+        if solver_name == "bdf":
             bdf_errors.append((loc_errors.mean(), loc_errors.std()))
             bdf_times.append(np.mean(times))
         else:
@@ -78,24 +87,50 @@ for rel_tol in range(3, max_tol):
             sdirk_times.append(np.mean(times))
 
 fig, ax = plt.subplots(1, 1)
-slope, intercept, _, _, _ = stats.linregress(-np.arange(3, max_tol, step=1), np.log10(np.array(bdf_errors)[:, 0]))
-x = -np.arange(2, max_tol+1, step=0.1)
-ax.plot(np.power(10, x), np.power(10, slope * x + intercept),
-        linestyle="--", color="tab:blue")
-ax.errorbar(np.power(10., -np.arange(3, max_tol, step=1)), np.array(bdf_errors)[:, 0], np.array(bdf_errors)[:, 1], label=f"BDF ({slope:0.1f} * x - {-intercept:0.1f})",
-          marker="o", linestyle="", color="tab:blue")
-slope, intercept, _, _, _ = stats.linregress(-np.arange(3, max_tol, step=1), np.log10(np.array(sdirk_errors)[:, 0]))
-x = -np.arange(2, max_tol+1, step=0.1)
-ax.plot(np.power(10, x), np.power(10, slope * x + intercept),
-        linestyle="--", color="tab:orange")
-ax.errorbar(np.power(10., -np.arange(3, max_tol, step=1)), np.array(sdirk_errors)[:, 0], np.array(sdirk_errors)[:, 1], label=f"SDIRK ({slope:0.1f} * x + {intercept:0.1f})",
-          marker="o", linestyle="", color="tab:orange")
+slope, intercept, _, _, _ = stats.linregress(
+    -np.arange(3, max_tol, step=1), np.log10(np.array(bdf_errors)[:, 0])
+)
+x = -np.arange(2, max_tol + 1, step=0.1)
+ax.plot(
+    np.power(10, x),
+    np.power(10, slope * x + intercept),
+    linestyle="--",
+    color="tab:blue",
+)
+ax.errorbar(
+    np.power(10.0, -np.arange(3, max_tol, step=1)),
+    np.array(bdf_errors)[:, 0],
+    np.array(bdf_errors)[:, 1],
+    label=f"BDF ({slope:0.1f} * x - {-intercept:0.1f})",
+    marker="o",
+    linestyle="",
+    color="tab:blue",
+)
+slope, intercept, _, _, _ = stats.linregress(
+    -np.arange(3, max_tol, step=1), np.log10(np.array(sdirk_errors)[:, 0])
+)
+x = -np.arange(2, max_tol + 1, step=0.1)
+ax.plot(
+    np.power(10, x),
+    np.power(10, slope * x + intercept),
+    linestyle="--",
+    color="tab:orange",
+)
+ax.errorbar(
+    np.power(10.0, -np.arange(3, max_tol, step=1)),
+    np.array(sdirk_errors)[:, 0],
+    np.array(sdirk_errors)[:, 1],
+    label=f"SDIRK ({slope:0.1f} * x + {intercept:0.1f})",
+    marker="o",
+    linestyle="",
+    color="tab:orange",
+)
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlim((6e-12, 2e-3))
 ax.set_ylim((6e-11, 2e-2))
-ax.set_xticks(np.power(10., -np.arange(3, max_tol, step=2)))
-ax.set_yticks(np.power(10., -np.arange(2, 11, step=2)))
+ax.set_xticks(np.power(10.0, -np.arange(3, max_tol, step=2)))
+ax.set_yticks(np.power(10.0, -np.arange(2, 11, step=2)))
 ax.set_xlabel("local error tolerance")
 ax.set_ylabel("estimated global error")
 ax.invert_xaxis()

@@ -10,18 +10,18 @@ import util
 
 def mask_to_num(mask: str):
     changes = []
-    for i in np.arange(1,len(mask)):
-        if mask[i]!=mask[i-1]:
+    for i in np.arange(1, len(mask)):
+        if mask[i] != mask[i - 1]:
             changes.append(i)
-    state=False
+    state = False
     last_on = None
-    out=''
-    if mask[0]=='1':
+    out = ""
+    if mask[0] == "1":
         if not changes:
             return out
-        state=True
-        last_on=0
-        out='1'
+        state = True
+        last_on = 0
+        out = "1"
     for change in changes:
         if state:
             if last_on < i:
@@ -31,7 +31,7 @@ def mask_to_num(mask: str):
         else:
             if not last_on is None:
                 out += ","
-            out += f"{change+1}"
+            out += f"{change + 1}"
             state = True
     if state:
         out += f"-{len(mask)}"
@@ -39,8 +39,8 @@ def mask_to_num(mask: str):
 
 
 util.print_box(f"Executing {os.path.basename(__file__)}")
-plt.rcParams['font.size'] = 16
-C_X3 = '#023d6b'
+plt.rcParams["font.size"] = 16
+C_X3 = "#023d6b"
 x3cflux.logging.level = 0
 
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
@@ -50,7 +50,9 @@ config = data.configurations[config_names.index("a_INST")]
 simulator_inst = x3cflux.create_simulator_from_data(data.network_data, config)
 simulator_inst.builder.solver.relative_tolerance = 1e-6
 simulator_inst.builder.solver.absolute_tolerance = 1e-9
-params = x3cflux.get_parameters(simulator_inst.parameter_space, config.parameter_entries)
+params = x3cflux.get_parameters(
+    simulator_inst.parameter_space, config.parameter_entries
+)
 param_names = simulator_inst.parameter_space.parameter_names
 
 samples = pd.read_csv("../data/poolsize_samples.csv", header=None).to_numpy()
@@ -58,21 +60,25 @@ samples = pd.read_csv("../data/poolsize_samples.csv", header=None).to_numpy()
 total = len(samples)
 print(f"simulating {total} INST samples")
 bar_len = 80
-time = np.zeros(total,)
+time = np.zeros(
+    total,
+)
 num_repeats = 10
-for i,s in enumerate(samples):
+for i, s in enumerate(samples):
     params[35:91] = s
     before = perf_counter()
     for j in range(num_repeats):
-        temp = simulator_inst.compute_measurements(params = params, time_stamps=[10_000_000])
+        temp = simulator_inst.compute_measurements(
+            params=params, time_stamps=[10_000_000]
+        )
     after = perf_counter()
-    time[i] = (after-before)/num_repeats
+    time[i] = (after - before) / num_repeats
     # build & print bar
-    util.progress_bar(i+1, total)
+    util.progress_bar(i + 1, total)
 print("")
 
 plt.hist(time, bins=40, color=C_X3)
-plt.xlabel('← runtime [ms]')
+plt.xlabel("← runtime [ms]")
 plt.tight_layout()
 filename = "../out/figure_s08"
 print(f"saving figure to {filename}")
