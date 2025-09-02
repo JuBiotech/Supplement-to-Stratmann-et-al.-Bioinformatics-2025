@@ -7,8 +7,13 @@ import pandas as pd
 from time import perf_counter
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+import os
+import util
 
+
+util.print_box(f"Executing {os.path.basename(__file__)}")
 C_X3 = '#023d6b'
+x3cflux.logging.level = 0
 
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
 num_runs = 100
@@ -21,6 +26,7 @@ simulator_base = x3cflux.create_simulator_from_data(data.network_data, data.conf
 params = x3cflux.get_parameters(simulator_base.parameter_space, data.configurations[config_index].parameter_entries)
 
 for tol in tols:
+    print(f"Solving for tolerance {tol} ({num_runs} times}")
     simulator_base.builder.solver.relative_tolerance = tol
     simulator_base.builder.solver.absolute_tolerance = tol*1e-3
 
@@ -36,9 +42,12 @@ means = np.array(times.mean(axis=0).values, dtype=float)
 ys = np.log10(means)
 model = LinearRegression()
 model.fit(xs.reshape(-1, 1),  ys)
+print(f"a tolerance decrease of 1 order of magnitude leads to a {(1-model.coeff_[0])*100}\% runtime increase")
 x3_y=model.predict([[1],[14]])
 
-times.to_csv("../out/figure_s9_raw.csv")
+csv_file = "../out/figure_s9_raw.csv"
+print(f"Saving data to {csv_file}")
+times.to_csv(csv_file)
 
 plt.errorbar(xs, times.mean(axis=0).values, yerr=times.std(axis=0).values, fmt='o', color=C_X3, label="13CFLUX(v3)")
 plt.yscale('log')
@@ -53,5 +62,7 @@ plt.ylim(ylims)
 plt.xlabel(r'$tol_{rel}$')
 plt.ylabel('← runtime [ms]')
 plt.tight_layout()
-plt.savefig('../out/figure_s9.png', dpi=150)
-plt.savefig('../out/figure_s9.svg')
+filename = "../out/figure_s09"
+print(f"saving to {filename}")
+plt.savefig(filename + ".png", dpi=150)
+plt.savefig(filename + ".svg")

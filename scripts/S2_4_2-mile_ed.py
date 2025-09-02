@@ -6,14 +6,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 import scipy.stats as stats
-
-plt.rcParams["font.size"] = 16
+import os
+import util
 
 
 def benchmark_ed(network_data, configuration, batch_sizes, substr_mix_collections, parallel_batch_size):
     parallel_times = np.zeros(len(batch_sizes))
     sequential_times = np.zeros(len(batch_sizes))
     for i, batch_size in enumerate(batch_sizes):
+        print(f"\tComputing ED for {batch_size} mixtures")
         loc_times = []
 
         substrates_mixtures, _ = x3cflux.compute_mixture_samples(substr_mix_collections[:1], batch_size)
@@ -24,6 +25,7 @@ def benchmark_ed(network_data, configuration, batch_sizes, substr_mix_collection
                 fixed_substrates.append(substrate)
 
         size = batch_size if batch_size < parallel_batch_size else parallel_batch_size
+        print(f"\t\tbatch-wise")
         for j in range(int(batch_size / (parallel_batch_size + 1)) + 1):
             simulator = x3cflux.create_simulator_from_inputs(network_data, configuration,
                                                              substrates_mixtures[
@@ -36,6 +38,7 @@ def benchmark_ed(network_data, configuration, batch_sizes, substr_mix_collection
         parallel_times[i] = np.sum(loc_times)
 
         loc_times = np.zeros(batch_size)
+        print(f"\t\tsequential")
         for j in range(batch_size):
             mix_meas_config = x3cflux.MeasurementConfiguration(
                 configuration.name if configuration.name else "",
@@ -56,7 +59,7 @@ def benchmark_ed(network_data, configuration, batch_sizes, substr_mix_collection
             loc_times[j] += (time.perf_counter() - start)
         sequential_times[i] = np.sum(loc_times)
 
-        print(f"num ed = {batch_size}, {parallel_times[i]:0.2f} vs {sequential_times[i]:0.2f}, speedup = {sequential_times[i]/parallel_times[i]:0.2f}")
+        print(f"\t{parallel_times[i]:0.2f} (batch-wise) vs {sequential_times[i]:0.2f} (sequential), speedup = {sequential_times[i]/parallel_times[i]:0.2f}")
 
     return parallel_times, sequential_times
 
@@ -81,9 +84,15 @@ def plot_ed_benchmark(parallel_times, sequential_times, batch_sizes, postfix):
     plt.xlim((1e1, 2e4))
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"../out/figure_s6.png", dpi=150)
-    plt.savefig(f"../out/figure_s6.svg")
+    filename = "../out/figure_s06"
+    print(f"saving to {filename}")
+    plt.savefig(filename + ".png", dpi=150)
+    plt.savefig(filename + ".svg")
 
+
+util.print_box(f"Executing {os.path.basename(__file__)}")
+plt.rcParams["font.size"] = 16
+x3cflux.logging.level = 0
 
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
 substr_mix_collections = x3cflux.parse_substrate_mixture_collections("../models/mixture.fml")

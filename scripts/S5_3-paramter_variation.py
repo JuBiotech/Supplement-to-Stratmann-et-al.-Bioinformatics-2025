@@ -4,9 +4,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from time import perf_counter
 import sys
+import os
+import util
 
-plt.rcParams['font.size'] = 16
-C_X3 = '#023d6b'
 
 def mask_to_num(mask: str):
     changes = []
@@ -37,10 +37,15 @@ def mask_to_num(mask: str):
         out += f"-{len(mask)}"
     return f"[{out}]"
 
+
+util.print_box(f"Executing {os.path.basename(__file__)}")
+plt.rcParams['font.size'] = 16
+C_X3 = '#023d6b'
+x3cflux.logging.level = 0
+
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
 config_names = [i.name for i in data.configurations]
 
-# INST
 config = data.configurations[config_names.index("a_INST")]
 simulator_inst = x3cflux.create_simulator_from_data(data.network_data, config)
 simulator_inst.builder.solver.relative_tolerance = 1e-6
@@ -63,16 +68,13 @@ for i,s in enumerate(samples):
     after = perf_counter()
     time[i] = (after-before)/num_repeats
     # build & print bar
-    idx = i + 1
-    filled = int(bar_len * idx / total)
-    bar = '#' * filled + '-' * (bar_len - filled)
-    pct = idx / total * 100
-    sys.stdout.write(f'\r[{bar}] {pct:5.1f}% ({idx}/{total})')
-    sys.stdout.flush()
+    util.progress_bar(i+1, total)
 print("")
 
 plt.hist(time, bins=40, color=C_X3)
 plt.xlabel('← runtime [ms]')
 plt.tight_layout()
-plt.savefig('../out/figure_s8.png', dpi=150)
-plt.savefig('../out/figure_s8.svg')
+filename = "../out/figure_s08"
+print(f"saving to {filename}")
+plt.savefig(filename + ".png", dpi=150)
+plt.savefig(filename + ".svg")

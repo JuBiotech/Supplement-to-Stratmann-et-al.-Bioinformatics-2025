@@ -7,8 +7,7 @@ from sympy import Function, dsolve, Derivative, Symbol
 from sympy.abc import x
 import os
 import util
-plt.rcParams['font.size'] = 16
-plt.rcParams['figure.figsize'][0] = 10
+
 
 def global_error(jac, rhs, solution):
     a = Function("a")
@@ -24,6 +23,8 @@ def global_error(jac, rhs, solution):
     return np.max(errors)
 
 util.print_box(f"Executing {os.path.basename(__file__)}")
+plt.rcParams['font.size'] = 16
+plt.rcParams['figure.figsize'][0] = 10
 x3cflux.logging.level = 0
 simulator = x3cflux.create_simulator_from_fml("../models/linea.fml")
 simulator.parameter_space.free_parameter_names
