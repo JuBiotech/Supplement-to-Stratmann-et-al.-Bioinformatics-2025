@@ -25,7 +25,6 @@ def global_error(jac, rhs, solution):
 
 print("\n")
 util.print_full_line()
-print("\n")
 print(f"Executing {os.path.basename(__file__)}\n")
 x3cflux.logging.level = 0
 simulator = x3cflux.create_simulator_from_fml("../models/linea.fml")
@@ -35,6 +34,7 @@ tau = Symbol("tau")
 A = Symbol("A")
 a = Function("a")
 b = Function("b")
+print("\tSolving system manually")
 system = [Derivative(b(x), x) + (tau + 1) * b(x) - (tau +1) * a(x),
           A * Derivative(a(x), x) - tau * b(x) + (tau + 1) * a(x) - 1]
 result = dsolve(system, ics={a(0.): 0.01109, b(0.): 0.01109})
@@ -43,7 +43,7 @@ data = {}
 for name in ["bdf", "sdirk"]:
     simulator.builder.set_solver(name)
     data.update({name: {}})
-    print(f"\tUsing {name} solver")
+    print(f"\tSolving system with x3cflux using {name} solver")
     for j in [3, 6, 9]:
         simulator.builder.solver.relative_tolerance = np.power(10., -j)
         simulator.builder.solver.absolute_tolerance = np.power(10., -(j+3))
