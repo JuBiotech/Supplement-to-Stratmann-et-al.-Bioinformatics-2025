@@ -6,8 +6,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 import time
+import util
 
 plt.rcParams["font.size"] = 16
+x3cflux.logging.level = 0
 
 def supremum_norm(x, y):
     errors = np.zeros(len(x))
@@ -40,6 +42,8 @@ def run_benchmark(simulator, reference_solutions, time_grid, samples):
     return errors, times
 
 
+print("\n")
+util.print_box(f"Executing {os.path.basename(__file__)}")
 simulator = x3cflux.create_simulator_from_fml("../models/Syn.fml", "a")
 ineq_sys = simulator.parameter_space.inequality_system
 simulator.builder.solver.num_max_steps = 1_000_000
@@ -98,5 +102,7 @@ ax.set_ylabel("estimated global error")
 ax.invert_xaxis()
 plt.legend()
 plt.tight_layout()
-plt.savefig("../out/figure_s2.png", dpi=150)
-plt.savefig("../out/figure_s2.svg")
+filename = "../out/figure_s02"
+print(f"saving to {filename}")
+plt.savefig(filename + ".png", dpi=150)
+plt.savefig(filename + ".svg")

@@ -1,20 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import shutil
-
-def terminal_width(default: int = 80) -> int:
-    """Return current terminal width, fallback to default."""
-    try:
-        return shutil.get_terminal_size().columns
-    except Exception:
-        return default
-
-def print_full_line(char: str = "=", width: int | None = None) -> None:
-    """Print a line composed of `char` filling the terminal width."""
-    w = width or terminal_width()
-    print(char * max(0, w))
-    
 def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
     """
     Print `text` centered in a nice double-line box using Unicode box-drawing chars.
@@ -52,3 +38,12 @@ def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
 
     # Bottom border
     print(f"{BL}{H * inner_width}{BR}")
+
+
+def progress_bar(idx: int, total: int, bar_len: int = 80) -> None:
+    filled = int(bar_len * idx / total)
+    bar = '#' * filled + '-' * (bar_len - filled)
+    pct = idx / total * 100
+    sys.stdout.write(f'\r[{bar}] {pct:5.1f}% ({idx}/{total})')
+    sys.stdout.flush()
+
