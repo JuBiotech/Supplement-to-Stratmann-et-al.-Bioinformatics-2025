@@ -26,7 +26,7 @@ simulator_base = x3cflux.create_simulator_from_data(data.network_data, data.conf
 params = x3cflux.get_parameters(simulator_base.parameter_space, data.configurations[config_index].parameter_entries)
 
 for tol in tols:
-    print(f"Solving for tolerance {tol} ({num_runs} times}")
+    print(f"Solving for tolerance {tol} ({num_runs} times)")
     simulator_base.builder.solver.relative_tolerance = tol
     simulator_base.builder.solver.absolute_tolerance = tol*1e-3
 

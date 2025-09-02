@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import sys
 
 def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
     """
@@ -17,8 +18,6 @@ def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
     BR = "╝"
     H  = "═"
     V  = "║"
-    # For inner separators (if multiple lines) you could use double-line horizontal with middle joints
-    # but here we keep a continuous top/bottom and vertical sides.
 
     # Split input into lines and compute inner width
     lines = text.splitlines() or [""]
