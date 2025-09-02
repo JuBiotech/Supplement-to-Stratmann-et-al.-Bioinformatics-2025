@@ -75,6 +75,6 @@ plt.hist(time, bins=40, color=C_X3)
 plt.xlabel('← runtime [ms]')
 plt.tight_layout()
 filename = "../out/figure_s08"
-print(f"saving to {filename}")
+print(f"saving figure to {filename}")
 plt.savefig(filename + ".png", dpi=150)
 plt.savefig(filename + ".svg")

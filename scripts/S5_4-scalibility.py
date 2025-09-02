@@ -64,6 +64,6 @@ plt.xlabel(r'$tol_{rel}$')
 plt.ylabel('← runtime [ms]')
 plt.tight_layout()
 filename = "../out/figure_s09"
-print(f"saving to {filename}")
+print(f"saving figure to {filename}")
 plt.savefig(filename + ".png", dpi=150)
 plt.savefig(filename + ".svg")

@@ -164,7 +164,7 @@ def plot_solution_times(msms_times_stat, ms_times_stat, msms_times_inst, ms_time
 
     plt.tight_layout()
     filename = "../out/figure_s05"
-    print(f"saving to {filename}")
+    print(f"saving figure to {filename}")
     plt.savefig(filename + ".png", dpi=150)
     plt.savefig(filename + ".svg")
 
@@ -210,7 +210,7 @@ def plot_total_essential_dimension(msms_times_stat, ms_times_stat, msms_times_in
     fig.supxlabel("measurement configurations", y=0.03)
     plt.tight_layout()
     filename = "../out/figure_s04"
-    print(f"saving to {filename}")
+    print(f"saving figure to {filename}")
     plt.savefig(filename + ".png", dpi=150)
     plt.savefig(filename + ".svg")
 

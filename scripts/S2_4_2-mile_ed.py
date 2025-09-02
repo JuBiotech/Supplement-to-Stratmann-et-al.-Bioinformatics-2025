@@ -85,7 +85,7 @@ def plot_ed_benchmark(parallel_times, sequential_times, batch_sizes, postfix):
     plt.legend()
     plt.tight_layout()
     filename = "../out/figure_s06"
-    print(f"saving to {filename}")
+    print(f"saving figure to {filename}")
     plt.savefig(filename + ".png", dpi=150)
     plt.savefig(filename + ".svg")
 

@@ -36,7 +36,7 @@ def print_box(text: str, padding: int = 5, min_width: int = 60) -> None:
         print(f"{V}{' ' * left_space}{line}{' ' * right_space}{V}")
 
     # Bottom border
-    print(f"{BL}{H * inner_width}{BR}")
+    print(f"{BL}{H * inner_width}{BR}\n")
 
 
 def progress_bar(idx: int, total: int, bar_len: int = 80) -> None:

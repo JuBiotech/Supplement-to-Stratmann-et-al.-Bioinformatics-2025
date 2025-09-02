@@ -12,7 +12,7 @@ import os
 def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
     meas_names = simulator.measurement_names[0]
     fig, axs = plt.subplots(len(meas_names) // n_per_row + int(len(meas_names) % n_per_row != 0), n_per_row,
-                            figsize=(20, 10), sharex=True, sharey=True)
+                            figsize=(22, 11), sharex=True, sharey=True)
     time_grid = np.linspace(0, until, n_times)
     for sample in samples:
         label_meas, _ = simulator.compute_measurements(sample, time_stamps=time_grid)
@@ -44,7 +44,7 @@ def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
             ax.legend(ncol=8, bbox_to_anchor=(5, 1.25), fontsize=15)
         ax.set_title(meas_datum.metabolite_name, fontsize=20)
         xticks = [0, 25, 50, 75, 100, 125, 150]
-        plt.set_xticks(xticks)
+        ax.set_xticks(xticks)
         ax.set_xticklabels(xticks, fontsize=15)
     fig.text(0.5, 0.05, 'time [h]', ha='center', va='center', fontsize=18)
     fig.text(0.09, 0.5, 'fractional enrichment', ha='center', va='center', rotation='vertical', fontsize=18)
@@ -77,15 +77,14 @@ arviz.plot_pair(arviz.from_dict(
                                  markeredgecolor='grey'))
 plt.tight_layout()
 filename = "../out/figure_s10"
-print(f"saving to {filename}")
+print(f"saving figure to {filename}")
 plt.savefig(filename + ".png", dpi=300)
 plt.savefig(filename + ".svg")
 
-
+print("computing posterior predictives")
 plot(simulator, samples[0, np.random.randint(0, 24_000, 500)], n_times=100, until=150, n_per_row=5)
-plt.tight_layout()
 filename = "../out/figure_s11"
-print(f"saving to {filename}")
+print(f"saving figure to {filename}")
 plt.savefig(filename + ".png", dpi=300)
 plt.savefig(filename + ".svg")
 

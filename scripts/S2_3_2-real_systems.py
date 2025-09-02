@@ -102,6 +102,6 @@ ax.invert_xaxis()
 plt.legend()
 plt.tight_layout()
 filename = "../out/figure_s02"
-print(f"saving to {filename}")
+print(f"saving figure to {filename}")
 plt.savefig(filename + ".png", dpi=150)
 plt.savefig(filename + ".svg")

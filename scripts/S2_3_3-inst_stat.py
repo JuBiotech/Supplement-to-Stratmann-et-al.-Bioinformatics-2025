@@ -102,6 +102,6 @@ plt.vlines(1e-6, ymin=ylims[0], ymax=ylims[1], color='k', linestyle='dashed', la
 plt.ylim(ylims)
 plt.tight_layout()
 filename = "../out/figure_s03"
-print(f"saving to {filename}")
+print(f"saving figure to {filename}")
 plt.savefig(filename + ".png", dpi=150)
 plt.savefig(filename + ".svg")
