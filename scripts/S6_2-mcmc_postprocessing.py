@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import arviz
 import x3cflux
 import util
+import os
 
 
 def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
@@ -42,7 +43,9 @@ def plot(simulator, samples, n_times=100, n_per_row=4, until=1):
         if k==0:
             ax.legend(ncol=8, bbox_to_anchor=(5, 1.25), fontsize=15)
         ax.set_title(meas_datum.metabolite_name, fontsize=20)
-        ax.set_xticklabels([0, 25, 50, 75, 100, 125, 150], fontsize=15)
+        xticks = [0, 25, 50, 75, 100, 125, 150]
+        plt.set_xticks(xticks)
+        ax.set_xticklabels(xticks, fontsize=15)
     fig.text(0.5, 0.05, 'time [h]', ha='center', va='center', fontsize=18)
     fig.text(0.09, 0.5, 'fractional enrichment', ha='center', va='center', rotation='vertical', fontsize=18)
     plt.xlim((0, until))
