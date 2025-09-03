@@ -20,7 +20,7 @@ def benchmark_ed(
     parallel_times = np.zeros(len(batch_sizes))
     sequential_times = np.zeros(len(batch_sizes))
     for i, batch_size in enumerate(batch_sizes):
-        print(f"\tComputing ED for {batch_size} mixtures")
+        print(f"Computing ED for {batch_size} mixtures")
         loc_times = []
 
         substrates_mixtures, _ = x3cflux.compute_mixture_samples(
@@ -34,7 +34,7 @@ def benchmark_ed(
                 fixed_substrates.append(substrate)
 
         size = batch_size if batch_size < parallel_batch_size else parallel_batch_size
-        print(f"\t\tbatch-wise")
+        print(f"\tbatch-wise")
         for j in range(int(batch_size / (parallel_batch_size + 1)) + 1):
             simulator = x3cflux.create_simulator_from_inputs(
                 network_data,
@@ -51,7 +51,7 @@ def benchmark_ed(
         parallel_times[i] = np.sum(loc_times)
 
         loc_times = np.zeros(batch_size)
-        print(f"\t\tsequential")
+        print(f"\tsequential")
         for j in range(batch_size):
             mix_meas_config = x3cflux.MeasurementConfiguration(
                 configuration.name if configuration.name else "",
@@ -77,7 +77,7 @@ def benchmark_ed(
         sequential_times[i] = np.sum(loc_times)
 
         print(
-            f"\t{parallel_times[i]:0.2f} (batch-wise) vs {sequential_times[i]:0.2f} (sequential), speedup = {sequential_times[i] / parallel_times[i]:0.2f}"
+            f"\t{parallel_times[i]:0.2f}s (batch-wise) vs {sequential_times[i]:0.2f}s (sequential), speedup = {sequential_times[i] / parallel_times[i]:0.2f}"
         )
 
     return parallel_times, sequential_times
