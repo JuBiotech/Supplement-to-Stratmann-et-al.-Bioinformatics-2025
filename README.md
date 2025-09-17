@@ -1,4 +1,4 @@
-# Online Supplementary Information for 13CFLUX -- Third generation high-performance simulator for <sup>13</sup>C metabolic flux analysis
+# Online Supplementary Information for 13CFLUX -- Third generation high-performance engine for isotopically (non)stationary <sup>13</sup>C metabolic flux analysis
 
 With this script you will be able to reproduce figures and data from the Supplementary information. 
 
