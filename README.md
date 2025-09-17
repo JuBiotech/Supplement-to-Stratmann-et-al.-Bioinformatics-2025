@@ -23,7 +23,7 @@ On an AMD EPYC 9334 execution takes about 1 hour
 
 Because Bayesian inference is much more computationally costly than the other tasks,
 we provide the raw samples on [zenodo](https://doi.org/10.5281/zenodo.17100887).
-After downloading extract them to the `data` subdirectory
+After downloading extract them to the `data` subdirectory.
 Additionally, the samples can be technically be reproduced by calling
 ```shell
 docker run -v .:/task jugit-registry.fz-juelich.de/ibg-1/modsim/fluxomics/13cflux:latest /task/run-sampling.sh
