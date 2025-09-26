@@ -1,0 +1,319 @@
+╔════════════════════════════════════════════════════════════╗
+║              Executing S2_3_1-test_system.py               ║
+╚════════════════════════════════════════════════════════════╝
+
+Solving system manually
+Solving system with x3cflux using bdf solver
+        solving for solver tolerance 1e-3
+        solving for solver tolerance 1e-6
+        solving for solver tolerance 1e-9
+Solving system with x3cflux using sdirk solver
+        solving for solver tolerance 1e-3
+        solving for solver tolerance 1e-6
+        solving for solver tolerance 1e-9
+saving figure to ../out/figure_s01
+
+╔════════════════════════════════════════════════════════════╗
+║              Executing S2_3_2-real_systems.py              ║
+╚════════════════════════════════════════════════════════════╝
+
+Compute high-accuracy solution (this might take a while)
+Compute solutions with increasing strict tolerances
+        rel tol = 1e-03
+        rel tol = 1e-04
+        rel tol = 1e-05
+        rel tol = 1e-06
+        rel tol = 1e-07
+        rel tol = 1e-08
+        rel tol = 1e-09
+        rel tol = 1e-10
+        rel tol = 1e-11
+saving figure to ../out/figure_s02
+
+╔════════════════════════════════════════════════════════════╗
+║               Executing S2_3_3-inst_stat.py                ║
+╚════════════════════════════════════════════════════════════╝
+
+simulating 1000 INST samples
+[################################################################################] 100.0% (1000/1000)
+Maximum difference between any INST and the corresponding STAT measurement: 1.24e-07
+saving figure to ../out/figure_s03
+
+╔════════════════════════════════════════════════════════════╗
+║         Executing S2_4_1-essential_dim_cumo_emu.py         ║
+╚════════════════════════════════════════════════════════════╝
+
+Evaluating IST Problem
+        Drawing 1000 samples with hopsy
+        Simulation for Tandem MS measurements
+                Adding measurement 1/33: ms_group_33
+                Adding measurement 2/33: ms_group_34
+                Adding measurement 3/33: ms_group_35
+                Adding measurement 4/33: ms_group_36
+                Adding measurement 5/33: ms_group_37
+                Adding measurement 6/33: ms_group_38
+                Adding measurement 7/33: ms_group_39
+                Adding measurement 8/33: ms_group_40
+                Adding measurement 9/33: ms_group_41
+                Adding measurement 10/33: ms_group_42
+                Adding measurement 11/33: ms_group_43
+                Adding measurement 12/33: ms_group_44
+                Adding measurement 13/33: ms_group_45
+                Adding measurement 14/33: ms_group_46
+                Adding measurement 15/33: ms_group_47
+                Adding measurement 16/33: ms_group_48
+                Adding measurement 17/33: ms_group_49
+                Adding measurement 18/33: ms_group_50
+                Adding measurement 19/33: ms_group_51
+                Adding measurement 20/33: ms_group_52
+                Adding measurement 21/33: ms_group_53
+                Adding measurement 22/33: ms_group_54
+                Adding measurement 23/33: ms_group_55
+                Adding measurement 24/33: ms_group_56
+                Adding measurement 25/33: ms_group_57
+                Adding measurement 26/33: ms_group_58
+                Adding measurement 27/33: ms_group_59
+                Adding measurement 28/33: ms_group_60
+                Adding measurement 29/33: ms_group_61
+                Adding measurement 30/33: ms_group_62
+                Adding measurement 31/33: ms_group_63
+                Adding measurement 32/33: ms_group_64
+                Adding measurement 33/33: ms_group_65
+        Simulation for MS measurements
+                Adding measurement 1/33: ms_group_33
+                Adding measurement 2/33: ms_group_34
+                Adding measurement 3/33: ms_group_35
+                Adding measurement 4/33: ms_group_36
+                Adding measurement 5/33: ms_group_37
+                Adding measurement 6/33: ms_group_38
+                Adding measurement 7/33: ms_group_39
+                Adding measurement 8/33: ms_group_40
+                Adding measurement 9/33: ms_group_41
+                Adding measurement 10/33: ms_group_42
+                Adding measurement 11/33: ms_group_43
+                Adding measurement 12/33: ms_group_44
+                Adding measurement 13/33: ms_group_45
+                Adding measurement 14/33: ms_group_46
+                Adding measurement 15/33: ms_group_47
+                Adding measurement 16/33: ms_group_48
+                Adding measurement 17/33: ms_group_49
+                Adding measurement 18/33: ms_group_50
+                Adding measurement 19/33: ms_group_51
+                Adding measurement 20/33: ms_group_52
+                Adding measurement 21/33: ms_group_53
+                Adding measurement 22/33: ms_group_54
+                Adding measurement 23/33: ms_group_55
+                Adding measurement 24/33: ms_group_56
+                Adding measurement 25/33: ms_group_57
+                Adding measurement 26/33: ms_group_58
+                Adding measurement 27/33: ms_group_59
+                Adding measurement 28/33: ms_group_60
+                Adding measurement 29/33: ms_group_61
+                Adding measurement 30/33: ms_group_62
+                Adding measurement 31/33: ms_group_63
+                Adding measurement 32/33: ms_group_64
+                Adding measurement 33/33: ms_group_65
+Evaluating INST Problem
+        Drawing 1000 with hopsy
+        Simulation for Tandem MS measurements
+                Adding measurement 1/33: ms_group_0
+                Adding measurement 2/33: ms_group_1
+                Adding measurement 3/33: ms_group_10
+                Adding measurement 4/33: ms_group_11
+                Adding measurement 5/33: ms_group_12
+                Adding measurement 6/33: ms_group_13
+                Adding measurement 7/33: ms_group_14
+                Adding measurement 8/33: ms_group_15
+                Adding measurement 9/33: ms_group_16
+                Adding measurement 10/33: ms_group_17
+                Adding measurement 11/33: ms_group_18
+                Adding measurement 12/33: ms_group_19
+                Adding measurement 13/33: ms_group_2
+                Adding measurement 14/33: ms_group_20
+                Adding measurement 15/33: ms_group_21
+                Adding measurement 16/33: ms_group_22
+                Adding measurement 17/33: ms_group_23
+                Adding measurement 18/33: ms_group_24
+                Adding measurement 19/33: ms_group_25
+                Adding measurement 20/33: ms_group_26
+                Adding measurement 21/33: ms_group_27
+                Adding measurement 22/33: ms_group_28
+                Adding measurement 23/33: ms_group_29
+                Adding measurement 24/33: ms_group_3
+                Adding measurement 25/33: ms_group_30
+                Adding measurement 26/33: ms_group_31
+                Adding measurement 27/33: ms_group_32
+                Adding measurement 28/33: ms_group_4
+                Adding measurement 29/33: ms_group_5
+                Adding measurement 30/33: ms_group_6
+                Adding measurement 31/33: ms_group_7
+                Adding measurement 32/33: ms_group_8
+                Adding measurement 33/33: ms_group_9
+        Simulation for MS measurements
+                Adding measurement 1/33: ms_group_0
+                Adding measurement 2/33: ms_group_1
+                Adding measurement 3/33: ms_group_10
+                Adding measurement 4/33: ms_group_11
+                Adding measurement 5/33: ms_group_12
+                Adding measurement 6/33: ms_group_13
+                Adding measurement 7/33: ms_group_14
+                Adding measurement 8/33: ms_group_15
+                Adding measurement 9/33: ms_group_16
+                Adding measurement 10/33: ms_group_17
+                Adding measurement 11/33: ms_group_18
+                Adding measurement 12/33: ms_group_19
+                Adding measurement 13/33: ms_group_2
+                Adding measurement 14/33: ms_group_20
+                Adding measurement 15/33: ms_group_21
+                Adding measurement 16/33: ms_group_22
+                Adding measurement 17/33: ms_group_23
+                Adding measurement 18/33: ms_group_24
+                Adding measurement 19/33: ms_group_25
+                Adding measurement 20/33: ms_group_26
+                Adding measurement 21/33: ms_group_27
+                Adding measurement 22/33: ms_group_28
+                Adding measurement 23/33: ms_group_29
+                Adding measurement 24/33: ms_group_3
+                Adding measurement 25/33: ms_group_30
+                Adding measurement 26/33: ms_group_31
+                Adding measurement 27/33: ms_group_32
+                Adding measurement 28/33: ms_group_4
+                Adding measurement 29/33: ms_group_5
+                Adding measurement 30/33: ms_group_6
+                Adding measurement 31/33: ms_group_7
+                Adding measurement 32/33: ms_group_8
+                Adding measurement 33/33: ms_group_9
+saving figure to ../out/figure_s04
+IST MS
+        cumomer: R² = 0.9984
+        EMU    : R² = 0.6379
+IST MSMS
+        cumomer: R² = 0.9946
+        EMU    : R² = 0.9960
+INST MS
+        cumomer: R² = 0.9980
+        EMU    : R² = 0.9936
+INST MSMS
+        cumomer: R² = 0.9951
+        EMU    : R² = 0.9995
+saving figure to ../out/figure_s05
+
+╔════════════════════════════════════════════════════════════╗
+║                Executing S2_4_2-mile_ed.py                 ║
+╚════════════════════════════════════════════════════════════╝
+
+Computing ED for 10 mixtures
+        batch-wise
+        sequential
+        0.01s (batch-wise) vs 0.02s (sequential), speedup = 2.94
+Computing ED for 25 mixtures
+        batch-wise
+        sequential
+        0.01s (batch-wise) vs 0.05s (sequential), speedup = 8.92
+Computing ED for 50 mixtures
+        batch-wise
+        sequential
+        0.01s (batch-wise) vs 0.10s (sequential), speedup = 10.95
+Computing ED for 75 mixtures
+        batch-wise
+        sequential
+        0.01s (batch-wise) vs 0.16s (sequential), speedup = 12.08
+Computing ED for 100 mixtures
+        batch-wise
+        sequential
+        0.02s (batch-wise) vs 0.21s (sequential), speedup = 9.61
+Computing ED for 200 mixtures
+        batch-wise
+        sequential
+        0.05s (batch-wise) vs 0.39s (sequential), speedup = 7.95
+Computing ED for 400 mixtures
+        batch-wise
+        sequential
+        0.11s (batch-wise) vs 0.82s (sequential), speedup = 7.65
+Computing ED for 600 mixtures
+        batch-wise
+        sequential
+        0.16s (batch-wise) vs 1.27s (sequential), speedup = 7.75
+Computing ED for 800 mixtures
+        batch-wise
+        sequential
+        0.23s (batch-wise) vs 1.76s (sequential), speedup = 7.54
+Computing ED for 1000 mixtures
+        batch-wise
+        sequential
+        0.29s (batch-wise) vs 2.12s (sequential), speedup = 7.26
+Computing ED for 2000 mixtures
+        batch-wise
+        sequential
+        0.63s (batch-wise) vs 4.27s (sequential), speedup = 6.74
+Computing ED for 4000 mixtures
+        batch-wise
+        sequential
+        1.30s (batch-wise) vs 8.59s (sequential), speedup = 6.59
+Computing ED for 6000 mixtures
+        batch-wise
+        sequential
+        2.07s (batch-wise) vs 12.23s (sequential), speedup = 5.90
+Computing ED for 8000 mixtures
+        batch-wise
+        sequential
+        2.75s (batch-wise) vs 16.18s (sequential), speedup = 5.89
+Computing ED for 10000 mixtures
+        batch-wise
+        sequential
+        3.44s (batch-wise) vs 20.18s (sequential), speedup = 5.87
+saving figure to ../out/figure_s06
+
+╔════════════════════════════════════════════════════════════╗
+║            Executing S5_3-paramter_variation.py            ║
+╚════════════════════════════════════════════════════════════╝
+
+simulating 1000 INST samples
+[################################################################################] 100.0% (1000/1000)
+saving figure to ../out/figure_s08
+
+╔════════════════════════════════════════════════════════════╗
+║               Executing S5_4-scalibility.py                ║
+╚════════════════════════════════════════════════════════════╝
+
+Solving for tolerance 0.01 (100 times)
+        average runtime 13.79 ms
+Solving for tolerance 0.001 (100 times)
+        average runtime 20.64 ms
+Solving for tolerance 0.0001 (100 times)
+        average runtime 29.80 ms
+Solving for tolerance 1e-05 (100 times)
+        average runtime 41.03 ms
+Solving for tolerance 1e-06 (100 times)
+        average runtime 55.83 ms
+Solving for tolerance 1e-07 (100 times)
+        average runtime 79.03 ms
+Solving for tolerance 1e-08 (100 times)
+        average runtime 113.47 ms
+Solving for tolerance 1e-09 (100 times)
+        average runtime 167.09 ms
+Solving for tolerance 1e-10 (100 times)
+        average runtime 248.80 ms
+Solving for tolerance 1e-11 (100 times)
+        average runtime 384.29 ms
+Solving for tolerance 1e-12 (100 times)
+        average runtime 745.55 ms
+a tolerance decrease of 1 order of magnitude leads to a 46% runtime increase
+Saving data to ../out/figure_s9_raw.csv
+saving figure to ../out/figure_s09
+
+╔════════════════════════════════════════════════════════════╗
+║           Executing S6_2-mcmc_postprocessing.py            ║
+╚════════════════════════════════════════════════════════════╝
+
+Reading data from ../data/results_0_0.npz
+Reading data from ../data/results_0_1.npz
+Reading data from ../data/results_1_0.npz
+Reading data from ../data/results_1_1.npz
+Reading data from ../data/results_2_0.npz
+Reading data from ../data/results_2_1.npz
+Reading data from ../data/results_3_0.npz
+Reading data from ../data/results_3_1.npz
+saving figure to ../out/figure_s10
+computing posterior predictives
+saving figure to ../out/figure_s11
