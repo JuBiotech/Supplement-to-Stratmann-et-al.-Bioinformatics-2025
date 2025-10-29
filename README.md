@@ -6,6 +6,7 @@ With this repository you will be able to reproduce figures and data from the sup
     ```shell
     docker pull jugit-registry.fz-juelich.de/ibg-1/modsim/fluxomics/13cflux
     ```
+    While reproduction with the PyPi package is also possible, but will require additional configuration.
 2. Clone this repository and change to its root directory
 3. Get the [files for S.6.2](#results-of-si-section-s62) (optional, but required to reproduce the specific section)
 4. Generate the results by running
