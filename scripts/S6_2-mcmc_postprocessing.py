@@ -89,11 +89,15 @@ mle = x3cflux.get_parameters(
 
 samples = np.zeros((4, 24000, 60))
 
-for i in range(4):
-    for j in range(2):
-        fn = f"../data/results_{i}_{j}.npz"
-        print(f"Reading data from {fn}")
-        samples[i, j * 12000 : (j + 1) * 12000] = np.load(fn)["samples"][0]
+try:
+    for i in range(4):
+        for j in range(2):
+            fn = f"../data/results_{i}_{j}.npz"
+            print(f"Reading data from {fn}")
+            samples[i, j * 12000 : (j + 1) * 12000] = np.load(fn)["samples"][0]
+except FileNotFoundError:
+    print("Sampling results not found. Follow the instructions in the README to either download them from Zenodo or generate them by yourself.")
+    exit(1)
 
 idx = [2, 5, 1, 26, 54]
 arviz.plot_pair(

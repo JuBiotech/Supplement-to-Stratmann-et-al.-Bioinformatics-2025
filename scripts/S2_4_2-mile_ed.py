@@ -138,7 +138,7 @@ plt.rcParams["font.size"] = 16
 x3cflux.logging.level = 0
 
 data = x3cflux.FluxMLParser().parse("../models/EC.fml")
-substr_mix_collections = x3cflux.parse_substrate_mixture_collections(
+substr_mix_collections = x3cflux.parse_tracer_mixtures(
     "../models/mixture.fml"
 )
 batch_sizes_ed = (

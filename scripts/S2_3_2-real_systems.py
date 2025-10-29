@@ -18,13 +18,13 @@ def supremum_norm(x, y):
 
 
 def run_benchmark(simulator, reference_solutions, time_grid, samples):
-    n_samples = len(samples)
+    n_samples = samples.shape[1]
     errors = np.zeros(n_samples)
     times = np.zeros(n_samples)
     for i in range(n_samples):
         start = time.perf_counter()
         label_meas, _ = simulator.compute_measurements(
-            samples[i], time_stamps=time_grid
+            samples[:, i], time_stamps=time_grid
         )
         times[i] = time.perf_counter() - start
 
@@ -54,7 +54,7 @@ simulator.builder.solver.num_max_steps = 1_000_000
 
 n_samples = 10
 problem = hopsy.Problem(ineq_sys.matrix, ineq_sys.bound)
-samples = x3cflux.run_uniform_sampling(simulator, n_samples)[0]
+samples = x3cflux.run_uniform_sampling(simulator, n_samples)
 
 print("Compute high-accuracy solution (this might take a while)")
 simulator.builder.set_solver("sdirk")
@@ -62,7 +62,7 @@ simulator.builder.solver.relative_tolerance = 1e-12
 simulator.builder.solver.absolute_tolerance = 1e-15
 time_grid = np.linspace(0.0, 610.0, num=1_000)
 reference_solutions = [
-    simulator.compute_measurements(samples[i], time_stamps=time_grid)
+    simulator.compute_measurements(samples[:, i], time_stamps=time_grid)
     for i in range(n_samples)
 ]
 
