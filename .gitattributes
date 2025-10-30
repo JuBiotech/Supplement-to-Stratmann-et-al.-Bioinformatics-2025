@@ -1,1 +1,3 @@
+[core]
+autoclrf=true
 *.sh eol=lf
